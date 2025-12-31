@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# shellcheck shell=bash
+
+set -euo pipefail
+
+cat <<'EOF'
+GnuCOBOL (formerly OpenCOBOL) is a free COBOL compiler that implements
+substantial parts of COBOL 85, COBOL 2002, COBOL 2014, and COBOL 2023.
+
+GnuCOBOL translates COBOL source code to C, then compiles it with a
+native C compiler to produce executables.
+
+Main command: cobc (the GnuCOBOL compiler)
+
+For more information: https://gnucobol.sourceforge.io/
+EOF

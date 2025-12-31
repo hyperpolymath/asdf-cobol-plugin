@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# shellcheck shell=bash
+
+# Outputs paths containing executables for the installed version
+# GnuCOBOL installs binaries to bin/
+
+set -euo pipefail
+
+echo "bin"

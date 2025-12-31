@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# shellcheck shell=bash
+
+set -euo pipefail
+
+cat <<'EOF'
+GnuCOBOL Resources:
+
+  Official Site:      https://gnucobol.sourceforge.io/
+  Downloads:          https://sourceforge.net/projects/gnucobol/files/
+  Documentation:      https://gnucobol.sourceforge.io/doc/gnucobol.html
+  FAQ:                https://gnucobol.sourceforge.io/faq/index.html
+  Mailing List:       https://lists.sourceforge.net/lists/listinfo/gnucobol-users
+  Bug Tracker:        https://sourceforge.net/p/gnucobol/bugs/
+
+asdf Plugin:
+  Repository:         https://gitlab.com/hyperpolymath/asdf-cobol
+  Issues:             https://gitlab.com/hyperpolymath/asdf-cobol/-/issues
+EOF
