@@ -53,26 +53,40 @@ sort_versions() {
 }
 
 list_all_versions() {
-  # Fetch version list from SourceForge directory listing
-  # Parse available versions from the gnucobol files directory
-  download_stdout "https://sourceforge.net/projects/gnucobol/files/gnucobol/" 2>/dev/null |
-    grep -oE 'gnucobol-[0-9]+\.[0-9]+(\.[0-9]+)?(rc[0-9]+)?\.tar\.(gz|xz|bz2)' |
-    sed -E 's/gnucobol-([0-9]+\.[0-9]+(\.[0-9]+)?(rc[0-9]+)?)\..*/\1/' |
+  # Fetch version list from SourceForge RSS feed (more reliable than HTML)
+  # RSS contains entries like: /gnucobol/3.2/gnucobol-3.2.tar.gz
+  # RC versions use format: gnucobol-3.2-rc1.tar.gz (with hyphen)
+  # Only match clean version tarballs (not _bin, _win, -preview variants)
+  download_stdout "https://sourceforge.net/projects/gnucobol/rss?path=/gnucobol" 2>/dev/null |
+    grep -oE 'gnucobol-[0-9]+\.[0-9]+(\.[0-9]+)?(-rc[0-9]+)?\.tar\.(gz|xz|bz2)' |
+    grep -v -E '(_bin|_win|preview)' |
+    sed -E 's/gnucobol-([0-9]+\.[0-9]+(\.[0-9]+)?(-rc[0-9]+)?)\.tar\..*/\1/' |
     sort -u
+}
+
+get_version_folder() {
+  local version="$1"
+  # SourceForge organizes by major.minor version (without rc suffix)
+  # e.g., 3.2-rc1 -> folder is 3.2, tarball is gnucobol-3.2-rc1.tar.gz
+  printf '%s' "$version" | sed -E 's/(-rc[0-9]+)$//'
 }
 
 get_download_url() {
   local version="$1"
+  local folder
+  folder="$(get_version_folder "$version")"
   local tarball_name="gnucobol-${version}.tar.gz"
 
   # SourceForge download URL pattern
-  printf '%s/%s/%s/download' "$GNUCOBOL_RELEASES_URL" "$version" "$tarball_name"
+  printf '%s/%s/%s/download' "$GNUCOBOL_RELEASES_URL" "$folder" "$tarball_name"
 }
 
 get_fallback_download_url() {
   local version="$1"
+  local folder
+  folder="$(get_version_folder "$version")"
   local tarball_name="gnucobol-${version}.tar.xz"
 
   # Try .tar.xz as fallback
-  printf '%s/%s/%s/download' "$GNUCOBOL_RELEASES_URL" "$version" "$tarball_name"
+  printf '%s/%s/%s/download' "$GNUCOBOL_RELEASES_URL" "$folder" "$tarball_name"
 }
