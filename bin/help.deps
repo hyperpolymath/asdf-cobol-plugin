@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# shellcheck shell=bash
+
+set -euo pipefail
+
+cat <<'EOF'
+GnuCOBOL requires the following dependencies to build:
+
+Required:
+  - C compiler (gcc or clang)
+  - make
+  - libgmp (GNU Multiple Precision Arithmetic Library)
+
+Optional (for additional features):
+  - libncurses (for SCREEN SECTION support)
+  - libdb (Berkeley DB for indexed files)
+  - libxml2 (for XML support)
+  - libcjson (for JSON support)
+
+Installation commands:
+
+  Debian/Ubuntu:
+    sudo apt-get install build-essential libgmp-dev libncurses-dev libdb-dev
+
+  Fedora/RHEL:
+    sudo dnf install gcc make gmp-devel ncurses-devel libdb-devel
+
+  Arch Linux:
+    sudo pacman -S base-devel gmp ncurses db
+
+  macOS (Homebrew):
+    brew install gmp ncurses berkeley-db
+
+  Guix:
+    guix install gcc-toolchain gmp ncurses bdb
+
+  Nix:
+    nix-shell -p gcc gnumake gmp ncurses db
+EOF
