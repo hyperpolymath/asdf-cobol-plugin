@@ -2,13 +2,29 @@
 ;; ECOSYSTEM.scm - Project ecosystem positioning
 
 (ecosystem
-  ((version . "1.0.0")
-   (name . "asdf-cobol-plugin")
-   (type . "component")
-   (purpose . "Part of hyperpolymath ecosystem")
-   (position-in-ecosystem . "supporting")
-   (related-projects
-     ((rhodium-standard . "sibling-standard")
-      (gitvisor . "infrastructure")))
-   (what-this-is . ("A hyperpolymath project"))
-   (what-this-is-not . ("A standalone solution"))))
+  (version "1.0.0")
+  (name "asdf-cobol-plugin")
+  (type "asdf-plugin")
+  (purpose "Version management for GnuCOBOL compiler")
+
+  (position-in-ecosystem
+    (category "developer-tools")
+    (subcategory "version-management")
+    (layer "user-facing"))
+
+  (related-projects
+    (sibling-standard
+      (name "asdf")
+      (relationship "plugin-host")
+      (url "https://asdf-vm.com"))
+    (sibling-standard
+      (name "cobol")
+      (relationship "managed-tool")
+      (url "https://gnucobol.sourceforge.io/")))
+
+  (what-this-is
+    "An asdf plugin for managing GnuCOBOL compiler versions")
+
+  (what-this-is-not
+    "Not a standalone version manager"
+    "Not a replacement for the tool itself"))
