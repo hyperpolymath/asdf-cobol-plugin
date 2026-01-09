@@ -1,43 +1,11 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# shellcheck shell=bash
-
 set -euo pipefail
 
 current_script_path="${BASH_SOURCE[0]}"
 plugin_dir="$(dirname "$(dirname "$current_script_path")")"
 
 # shellcheck source=../lib/utils.bash
-source "${plugin_dir}/lib/utils.bash"
+source "$plugin_dir/lib/utils.bash"
 
-install_version="${ASDF_INSTALL_VERSION:?}"
-download_path="${ASDF_DOWNLOAD_PATH:?}"
-
-mkdir -p "$download_path"
-
-download_url="$(get_download_url "$install_version")"
-tarball_name="gnucobol-${install_version}.tar.gz"
-tarball_path="${download_path}/${tarball_name}"
-
-printf 'Downloading GnuCOBOL %s from %s\n' "$install_version" "$download_url"
-
-# Attempt to download, fallback to .tar.xz if .tar.gz fails
-if ! download "$download_url" "$tarball_path" 2>/dev/null; then
-  printf 'Primary download failed, trying .tar.xz format...\n'
-  download_url="$(get_fallback_download_url "$install_version")"
-  tarball_name="gnucobol-${install_version}.tar.xz"
-  tarball_path="${download_path}/${tarball_name}"
-
-  if ! download "$download_url" "$tarball_path"; then
-    fail "Failed to download GnuCOBOL ${install_version}"
-  fi
-fi
-
-# Extract tarball
-printf 'Extracting %s\n' "$tarball_name"
-tar -xf "$tarball_path" -C "$download_path" --strip-components=1
-
-# Clean up tarball to save space
-rm -f "$tarball_path"
-
-printf 'Download complete.\n'
+download_release "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH"
